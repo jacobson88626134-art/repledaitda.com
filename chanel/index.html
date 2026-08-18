@@ -131,6 +131,7 @@
                 <div class="flex overflow-x-auto py-4 space-x-6 scrollbar-hide text-sm md:text-base font-bold text-gray-500 whitespace-nowrap" id="category-filters">
                     <button data-filter="all" class="filter-btn text-black border-b-2 border-black pb-1 focus:outline-none">전체보기 (ALL)</button>
                     <button data-filter="classic" class="filter-btn hover:text-black transition border-b-2 border-transparent pb-1 focus:outline-none">클래식 라인</button>
+                    <button data-filter="seasonal" class="filter-btn hover:text-black transition border-b-2 border-transparent pb-1 focus:outline-none">시즌백 & 신상</button>
                     <button data-filter="boy" class="filter-btn hover:text-black transition border-b-2 border-transparent pb-1 focus:outline-none">보이백</button>
                     <button data-filter="22bag" class="filter-btn hover:text-black transition border-b-2 border-transparent pb-1 focus:outline-none">22백 & 19백</button>
                     <button data-filter="woc" class="filter-btn hover:text-black transition border-b-2 border-transparent pb-1 focus:outline-none">WOC & 지갑</button>
@@ -276,13 +277,13 @@
 
             // 가상의 상품 데이터 목록 (실제 환경에서는 DB나 API에서 가져옵니다)
             const productData = [
-                {
+              {
         id: 1,
-        category: 'seasonal',
+        category: ['classic', 'seasonal'], // 클래식, 시즌백 2개 카테고리 동시 지정
         name: '샤넬 램스킨 쁘띠삭 골든볼 내장칩',
         desc: '정품 동일 램스킨 / 마이크로칩 탑재 / 길이조절 골든볼',
         price: '500,000원',
-        img: '/img/channel/6O7A9882.webp',
+        img: 'https://repledaitda.com/img/channel/6O7A9882.webp',
         badge: 'HOT',
         link: '/chanel/petit-sac-golden-ball-lambskin/'
     },
