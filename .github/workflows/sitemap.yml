@@ -20,6 +20,7 @@ jobs:
         uses: cicirello/generate-sitemap@v1
         with:
           base-url-path: https://repledaitda.com/
+          drop-html-extension: true
           
       - name: 3. 만들어진 사이트맵을 서버에 자동 저장 (Commit & Push)
         run: |
