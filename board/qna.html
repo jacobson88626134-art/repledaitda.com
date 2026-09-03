@@ -122,12 +122,7 @@
                             </p>
                         </div>
                     </div>
-                    <div class="w-full md:w-auto relative z-10">
-                        <button onclick="ChannelIO('showMessenger')" class="w-full bg-black text-white font-bold py-3 px-6 hover:bg-gray-800 transition shadow-lg whitespace-nowrap flex items-center justify-center">
-                            <span class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
-                            실시간 상담 시작하기
-                        </button>
-                    </div>
+              
                 </div>
 
                 <!-- 상담 채널 안내 카드 -->
@@ -142,7 +137,6 @@
                         <p class="text-gray-500 text-sm mb-6 flex-grow leading-relaxed">
                             별도의 앱 설치나 이동 없이 현재 보고 계신 화면에서 바로 문의가 가능합니다. 상품 사진 전송 및 즉각적인 피드백에 가장 최적화되어 있습니다.
                         </p>
-                        <p class="text-xs font-bold text-black mb-4">운영시간 : 평일 10:00 - 18:00</p>
                         <button onclick="ChannelIO('showMessenger')" class="w-full block bg-gray-900 text-white font-bold py-3 rounded hover:bg-black transition">
                             채팅창 열기
                         </button>
@@ -157,10 +151,10 @@
                         <p class="text-gray-500 text-sm mb-6 flex-grow leading-relaxed">
                             언제 어디서나 익숙한 카카오톡으로 문의하세요. 상담 내역을 보관하기 좋으며, 신상 입고 소식과 시크릿 할인 쿠폰을 가장 먼저 받아보실 수 있습니다.
                         </p>
-                        <p class="text-xs font-bold text-black mb-4">카카오톡 검색 : @레플다있다</p>
+                        <p class="text-xs font-bold text-black mb-4">카카오톡 ID 검색 : acem777</p>
                         <!-- 카카오톡 채널 링크 (실제 운영 시 링크 변경 필요) -->
-                        <a href="javascript:alert('카카오톡 채널로 이동합니다.');" class="w-full block bg-[#FEE500] text-[#191919] font-bold py-3 rounded hover:bg-[#FADA0A] transition">
-                            카카오톡으로 문의하기
+                        <a onclick="copyKakaoId()" class="w-full block bg-[#FEE500] text-[#191919] font-bold py-3 rounded hover:bg-[#FADA0A] transition">
+                            카카오톡ID 복사하기
                         </a>
                     </div>
                 </div>
@@ -287,9 +281,7 @@
                 </div>
                 <div>
                     <h4 class="font-bold text-gray-900 mb-4 tracking-wider">CUSTOMER CENTER</h4>
-                    <p class="text-sm text-gray-500 mb-2">운영시간: 평일 10:00 - 18:00 (주말/공휴일 휴무)</p>
-                    <p class="text-sm text-gray-500 mb-4">카카오톡 채널: <strong class="text-black">@레플다있다</strong></p>
-                    <a href="/board/qna/" class="inline-block bg-black text-white text-sm font-bold py-3 px-6 hover:bg-gray-800 transition shadow-md">1:1 실시간 맞춤 상담하기</a>
+                  <a href="/board/qna/" class="inline-block bg-black text-white text-sm font-bold py-3 px-6 hover:bg-gray-800 transition shadow-md">온라인 빠른 상담문의</a>
                 </div>
             </div>
             
@@ -320,7 +312,17 @@
         "pluginKey": "4e21b526-33c6-4016-8cc8-65736e378550"
       });
     </script>
-
+   <script>
+        // Kakao ID Copy Logic
+        function copyKakaoId() {
+            const kakaoId = 'acem777';
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(kakaoId).then(showToast).catch(() => legacyCopy(kakaoId));
+            } else {
+                legacyCopy(kakaoId);
+            }
+        }
+       </script>
     <!-- 스크립트 -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
