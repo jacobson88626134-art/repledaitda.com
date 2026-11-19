@@ -1,0 +1,35 @@
+---
+import '../styles/global.css';
+import SeoHead from '../components/SeoHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  canonicalPath: string;
+  image?: string;
+  type?: 'website' | 'article' | 'collection';
+  pubDate?: Date;
+  updatedDate?: Date;
+  breadcrumbs?: { name: string; url: string }[];
+  faqs?: { question: string; answer: string }[];
+  itemList?: { name: string; url: string }[];
+}
+
+const props = Astro.props;
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <SeoHead {...props} />
+  </head>
+  <body class="min-h-screen flex flex-col bg-paper text-ink font-sans">
+    <Header />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

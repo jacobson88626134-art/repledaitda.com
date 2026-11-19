@@ -1,0 +1,103 @@
+---
+import { CATEGORY_LIST } from '../lib/categories';
+
+const currentPath = Astro.url.pathname;
+const navItems = [
+  { label: 'HOME', href: '/' },
+  ...CATEGORY_LIST.map((c) => ({ label: c.enLabel, href: c.href })),
+];
+---
+
+<header class="sticky top-0 z-50 bg-paper/95 backdrop-blur border-b border-line">
+  <div class="max-w-5xl mx-auto px-5 h-16 flex items-center justify-between">
+    <a href="/" class="flex items-baseline gap-2 group">
+      <span class="text-lg font-bold tracking-[0.2em] uppercase text-ink">
+        REPLEDAITDA
+      </span>
+      <span class="hidden sm:inline text-[11px] tracking-[0.15em] uppercase text-muted">
+        ARCHIVE
+      </span>
+    </a>
+
+    <!-- Desktop Nav -->
+    <nav aria-label="주 메뉴" class="hidden md:flex items-center gap-7">
+      {navItems.map((item) => {
+        const isActive =
+          item.href === '/'
+            ? currentPath === '/'
+            : currentPath.startsWith(item.href);
+        return (
+          <a
+            href={item.href}
+            class:list={[
+              'text-xs tracking-[0.16em] uppercase py-1 transition-colors',
+              isActive
+                ? 'text-ink font-semibold border-b border-ink'
+                : 'text-muted hover:text-ink',
+            ]}
+          >
+            {item.label}
+          </a>
+        );
+      })}
+    </nav>
+
+    <!-- Mobile Menu Toggle -->
+    <button
+      id="mobile-menu-btn"
+      type="button"
+      aria-label="메뉴 열기"
+      aria-expanded="false"
+      class="md:hidden p-2 -mr-2 text-ink focus:outline-none"
+    >
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+        <path id="menu-icon-open" stroke-linecap="square" d="M4 7h16M4 12h16M4 17h16" />
+        <path id="menu-icon-close" class="hidden" stroke-linecap="square" d="M6 6l12 12M18 6L6 18" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile Drawer -->
+  <nav
+    id="mobile-menu"
+    aria-label="모바일 메뉴"
+    class="hidden md:hidden border-t border-line bg-white"
+  >
+    <div class="max-w-5xl mx-auto px-5 py-4 flex flex-col divide-y divide-line">
+      {navItems.map((item) => {
+        const isActive =
+          item.href === '/'
+            ? currentPath === '/'
+            : currentPath.startsWith(item.href);
+        return (
+          <a
+            href={item.href}
+            class:list={[
+              'py-3.5 text-xs tracking-[0.18em] uppercase',
+              isActive ? 'text-ink font-bold' : 'text-muted',
+            ]}
+          >
+            {item.label}
+          </a>
+        );
+      })}
+    </div>
+  </nav>
+</header>
+
+<script is:inline>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  const openIcon = document.getElementById('menu-icon-open');
+  const closeIcon = document.getElementById('menu-icon-close');
+
+  if (btn && menu) {
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!expanded));
+      menu.classList.toggle('hidden');
+      openIcon?.classList.toggle('hidden');
+      closeIcon?.classList.toggle('hidden');
+    });
+  }
+</script>

@@ -1,0 +1,39 @@
+---
+import { CATEGORY_LIST } from '../lib/categories';
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-line bg-white mt-20">
+  <div class="max-w-5xl mx-auto px-5 py-12">
+    <div class="flex flex-col md:flex-row md:items-start justify-between gap-8 pb-8 border-b border-line">
+      <div class="max-w-md">
+        <a href="/" class="text-base font-bold tracking-[0.2em] uppercase text-ink">
+          REPLEDAITDA ARCHIVE
+        </a>
+        <p class="mt-3 text-xs leading-relaxed text-muted">
+          하이엔드 가죽 소재, 봉제 공정, 등급 체계 및 실물 검수(QC) 기준을 객관적으로 기록하는
+          독립 리서치 아카이브입니다. 모든 아티클은 정보 제공 및 학습 목적으로 작성됩니다.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap gap-x-8 gap-y-3 text-xs tracking-[0.12em] uppercase">
+        {CATEGORY_LIST.map((cat) => (
+          <a href={cat.href} class="text-muted hover:text-ink transition-colors">
+            {cat.label}
+          </a>
+        ))}
+        <a href="/rss.xml" class="text-muted hover:text-ink transition-colors">
+          RSS
+        </a>
+        <a href="/sitemap-index.xml" class="text-muted hover:text-ink transition-colors">
+          SITEMAP
+        </a>
+      </div>
+    </div>
+
+    <div class="pt-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-[11px] text-muted">
+      <p>&copy; {year} REPLEDAITDA ARCHIVE. All rights reserved.</p>
+      <p>Independent Editorial &amp; Craftsmanship Research</p>
+    </div>
+  </div>
+</footer>

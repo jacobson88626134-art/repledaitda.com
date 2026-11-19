@@ -1,0 +1,80 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import { CATEGORY_LIST } from '../lib/categories';
+
+const allPosts = (await getCollection('posts')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const latestPosts = allPosts.slice(0, 12);
+---
+
+<BaseLayout
+  title="레플다있다 아카이브 | 샤넬·에르메스·루이비통 소재·등급·공정 전문 블로그"
+  description="샤넬 미러급, 에르메스 올수공, 미러급과 SA급의 공정 차이, 가죽 및 내장칩 판별 기준을 객관적으로 분석하는 하이엔드 리서치 아카이브입니다."
+  canonicalPath="/"
+  type="website"
+  itemList={latestPosts.map((p) => ({ name: p.data.title, url: `/posts/${p.slug}/` }))}
+>
+  <!-- 미니멀 에디토리얼 히어로 (텍스트 중심) -->
+  <section class="border-b border-line bg-white">
+    <div class="max-w-5xl mx-auto px-5 py-16 md:py-24">
+      <p class="text-[11px] font-semibold tracking-[0.24em] uppercase text-muted mb-4">
+        INDEPENDENT CRAFTSMANSHIP &amp; GRADE ARCHIVE
+      </p>
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-ink leading-tight max-w-3xl">
+        하이엔드 소재, 공정, 등급 기준을 기록하는 전문 리서치 아카이브
+      </h1>
+      <p class="mt-5 max-w-2xl text-sm sm:text-base text-muted leading-relaxed">
+        샤넬·에르메스·루이비통 주요 라인업의 가죽 결, 봉제 땀수, 마이크로 내장칩 구조와
+        미러급·SA급 등급 체계의 실질적인 차이를 과장 없이 데이터와 체크리스트 중심으로 정리합니다.
+      </p>
+
+      <!-- 4대 아카이브 허브 카드 (최상단 내부 링크 집중) -->
+      <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        {CATEGORY_LIST.map((cat) => {
+          const count = allPosts.filter((p) => p.data.category === cat.key).length;
+          return (
+            <a
+              href={cat.href}
+              class="p-5 bg-paper border border-line hover:border-ink transition-colors flex flex-col justify-between gap-4"
+            >
+              <div>
+                <p class="text-[10px] font-bold tracking-[0.2em] uppercase text-muted">
+                  {cat.enLabel}
+                </p>
+                <p class="mt-1.5 text-base font-bold text-ink">{cat.label}</p>
+              </div>
+              <div class="flex items-center justify-between text-xs text-muted">
+                <span>아티클 {count}편</span>
+                <span aria-hidden="true">&rarr;</span>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- 최신 아티클 피드 -->
+  <section class="max-w-5xl mx-auto px-5 py-12">
+    <div class="flex items-center justify-between pb-4 border-b border-ink">
+      <h2 class="text-xs font-bold tracking-[0.16em] uppercase text-ink">
+        LATEST RESEARCH
+      </h2>
+      <span class="text-xs text-muted">총 {allPosts.length}편</span>
+    </div>
+
+    {latestPosts.length > 0 ? (
+      <div>
+        {latestPosts.map((post) => <PostCard post={post} />)}
+      </div>
+    ) : (
+      <div class="py-16 text-center border-b border-line">
+        <p class="text-sm text-muted">첫 번째 리서치 아티클이 곧 발행됩니다.</p>
+      </div>
+    )}
+  </section>
+</BaseLayout>

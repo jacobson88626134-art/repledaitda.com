@@ -1,0 +1,172 @@
+---
+interface BreadcrumbItem {
+  name: string;
+  url: string;
+}
+
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  canonicalPath: string;
+  image?: string;
+  type?: 'website' | 'article' | 'collection';
+  pubDate?: Date;
+  updatedDate?: Date;
+  breadcrumbs?: BreadcrumbItem[];
+  faqs?: FaqItem[];
+  itemList?: { name: string; url: string }[];
+}
+
+const {
+  title,
+  description,
+  canonicalPath,
+  image = '/og-image.jpg',
+  type = 'website',
+  pubDate,
+  updatedDate,
+  breadcrumbs = [],
+  faqs = [],
+  itemList = [],
+} = Astro.props;
+
+const siteUrl = 'https://repledaitda.com';
+const canonicalUrl = new URL(canonicalPath, siteUrl).toString();
+const ogImageUrl = new URL(image, siteUrl).toString();
+const fullTitle = title.includes('레플다있다') ? title : `${title} | 레플다있다 아카이브`;
+
+const graph: Record<string, unknown>[] = [
+  {
+    '@type': 'Organization',
+    '@id': `${siteUrl}/#organization`,
+    name: '레플다있다 아카이브',
+    url: siteUrl,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${siteUrl}/favicon.webp`,
+    },
+  },
+  {
+    '@type': 'WebSite',
+    '@id': `${siteUrl}/#website`,
+    url: siteUrl,
+    name: '레플다있다 아카이브',
+    description: '하이엔드 가죽 공예·등급·소재·디테일 분석 전문 매거진',
+    inLanguage: 'ko-KR',
+    publisher: { '@id': `${siteUrl}/#organization` },
+  },
+];
+
+if (breadcrumbs.length > 0) {
+  graph.push({
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbs.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      item: new URL(item.url, siteUrl).toString(),
+    })),
+  });
+}
+
+if (type === 'article' && pubDate) {
+  graph.push({
+    '@type': 'BlogPosting',
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': canonicalUrl,
+    },
+    headline: title,
+    description,
+    image: [ogImageUrl],
+    datePublished: pubDate.toISOString(),
+    dateModified: (updatedDate ?? pubDate).toISOString(),
+    inLanguage: 'ko-KR',
+    author: {
+      '@type': 'Organization',
+      name: '레플다있다 리서치 데스크',
+      url: siteUrl,
+    },
+    publisher: { '@id': `${siteUrl}/#organization` },
+  });
+}
+
+if (type === 'collection') {
+  graph.push({
+    '@type': 'CollectionPage',
+    '@id': canonicalUrl,
+    url: canonicalUrl,
+    name: title,
+    description,
+    inLanguage: 'ko-KR',
+    isPartOf: { '@id': `${siteUrl}/#website` },
+  });
+}
+
+if (itemList.length > 0) {
+  graph.push({
+    '@type': 'ItemList',
+    itemListElement: itemList.map((item, idx) => ({
+      '@type': 'ListItem',
+      position: idx + 1,
+      name: item.name,
+      url: new URL(item.url, siteUrl).toString(),
+    })),
+  });
+}
+
+if (faqs.length > 0) {
+  graph.push({
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
+  });
+}
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': graph,
+};
+---
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+<link rel="canonical" href={canonicalUrl} />
+
+<link rel="icon" type="image/webp" href="/favicon.webp" />
+<link rel="apple-touch-icon" href="/favicon.webp" />
+<link rel="alternate" type="application/rss+xml" title="레플다있다 아카이브 RSS" href="/rss.xml" />
+
+<!-- Open Graph -->
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:type" content={type === 'article' ? 'article' : 'website'} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:site_name" content="레플다있다 아카이브" />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="675" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageUrl} />
+
+<!-- Structured Data (JSON-LD) -->
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

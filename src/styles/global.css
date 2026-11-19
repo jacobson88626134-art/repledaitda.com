@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: #FAFAFA;
+    color: #111111;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* 마크다운 비교표 가독성 및 모바일 가로 스크롤 대응 */
+  .prose table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.925rem;
+    margin-top: 1.75rem;
+    margin-bottom: 1.75rem;
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .prose thead th {
+    background-color: #111111;
+    color: #FFFFFF;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border: 1px solid #111111;
+  }
+
+  .prose tbody td {
+    padding: 0.75rem 1rem;
+    border: 1px solid #E5E5E5;
+    background-color: #FFFFFF;
+    white-space: normal;
+    min-width: 120px;
+  }
+
+  .prose tbody tr:nth-child(even) td {
+    background-color: #F7F7F5;
+  }
+}
