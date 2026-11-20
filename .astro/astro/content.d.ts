@@ -141,9 +141,16 @@ declare module 'astro:content' {
 
 	type ContentEntryMap = {
 		"posts": {
-"hello.md": {
-	id: "hello.md";
-  slug: "hello";
+"chanel-mirror-community-qc-checklist.md": {
+	id: "chanel-mirror-community-qc-checklist.md";
+  slug: "chanel-mirror-community-qc-checklist";
+  body: string;
+  collection: "posts";
+  data: InferEntrySchema<"posts">
+} & { render(): Render[".md"] };
+"mirror-vs-sa-grade-differences.md": {
+	id: "mirror-vs-sa-grade-differences.md";
+  slug: "mirror-vs-sa-grade-differences";
   body: string;
   collection: "posts";
   data: InferEntrySchema<"posts">

@@ -115,7 +115,6 @@ async function callDeepSeek(item) {
     throw new Error('DeepSeek 응답 본문이 비어 있습니다.');
   }
 
-  // 혹시 코드펜스가 섞였을 경우 대비
   const cleaned = raw.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
   return JSON.parse(cleaned);
 }
@@ -174,10 +173,7 @@ function serializeMarkdown(item, article, pubDate) {
       ? article.readingTime.trim()
       : '5분';
 
-  // 본문에 실수로 H1(# )이 들어갔다면 H2(## )로 안전 보정
-  const safeBody = article.contentMarkdown
-    .replace(/^#\s+/gm, '## ')
-    .trim();
+  const safeBody = article.contentMarkdown.replace(/^#\s+/gm, '## ').trim();
 
   return `---
 title: ${JSON.stringify(article.title.trim())}
